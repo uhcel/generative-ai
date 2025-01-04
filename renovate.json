@@ -1,23 +1,23 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["group:allNonMajor"],
   "prConcurrentLimit": 0,
   "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true
+    "enabled": false
   },
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "lockFileMaintenance",
-        "bump"
-      ],
+      "matchUpdateTypes": ["major", "minor", "patch", "lockFileMaintenance", "bump", "pin", "digest"],
+      "extends": ["schedule:quarterly"],
       "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major", "minor", "patch", "lockFileMaintenance", "bump", "pin", "digest"],
+      "excludePaths": ["gemini/sample-apps/genwealth/**"]
     }
   ],
+  "vulnerabilityAlerts": {
+    "schedule": ["at any time"]
+  },
   "pip_requirements": {
     "fileMatch": [
       "requirements.txt",

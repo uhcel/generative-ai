@@ -11,11 +11,11 @@ This folder contains instructions on:
 ## Setting up your Google Cloud project
 
 1. [Select or create a Google Cloud project](https://console.cloud.google.com/cloud-resource-manager).
-When you first create an account, you get a $300 free credit towards your compute/storage costs.
+   When you first create an account, you get a $300 free credit towards your compute/storage costs.
 
 2. [Make sure that billing is enabled for your project](https://cloud.google.com/billing/docs/how-to/modify-project).
 
-3. [Enable the Vertex AI API](https://console.cloud.google.com/flows/enableapi?apiid=aiplatform.googleapis.com).
+3. [Enable the Vertex AI API and Google Cloud Storage API](https://console.cloud.google.com/flows/enableapi?apiid=aiplatform.googleapis.com,storage.googleapis.com).
 
 ## Notebook environments
 
@@ -32,7 +32,7 @@ from google.colab import auth
 auth.authenticate_user()
 ```
 
-When using the vertexai Python SDK, you will also need to initialize it with your GCP `project_id` and `location`:
+When using the vertexai Python SDK, you will also need to initialize it with your Google Cloud `project_id` and `location`:
 
 ```py
 PROJECT_ID = "your-project-id"
@@ -58,12 +58,22 @@ After launching the notebook instance, you can clone this repository in your Jup
 git clone https://github.com/GoogleCloudPlatform/generative-ai.git
 ```
 
+#### Local development
+
+- Install the [Google Cloud SDK](https://cloud.google.com/sdk).
+
+- Obtain authentication credentials. Create local credentials by running the following command and following the oauth2 flow (read more about the command [here](https://cloud.google.com/sdk/gcloud/reference/beta/auth/application-default/login)):
+
+  ```bash
+  gcloud auth application-default login
+  ```
+
 ## Python library
 
 Install the latest Python SDK:
 
 ```sh
-!pip install google-cloud-aiplatform --upgrade
+%pip install google-cloud-aiplatform --upgrade
 ```
 
 You will need to initialize `vertexai` with your `project_id` and `location`:

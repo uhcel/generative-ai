@@ -1,10 +1,14 @@
-# Vertex AI Search Demo
+# Vertex AI Search Web App Demo
 
 > NOTE: Some of the features in this demo require allowlist access. If you would like early access, apply to become a [Trusted Tester for Google Cloud Generative AI][trustedtester].
 
 This demo illustrates how to search through a corpus of documents using [Vertex AI Search][enterprisesearch] (formerly known as Enterprise Search).
 
 Additional features include how to search the public Cloud Knowledge Graph using the [Enterprise Knowledge Graph][enterpriseknowledgegraph] API.
+
+## Video Walkthrough
+
+[![VAIS Web App Walkthrough](https://storage.googleapis.com/github-repo/search/web-app/vais_web_app_walkthrough.png)](https://storage.googleapis.com/github-repo/search/web-app/vais_web_app_walkthrough.mp4)
 
 ## Architecture
 
@@ -17,7 +21,7 @@ Additional features include how to search the public Cloud Knowledge Graph using
 
 ## Setup
 
-- Follow steps in [Get started with Enterprise Search][try_search] for Unstructured Data.
+- Follow steps in [Get started with Vertex AI Search][try_search] for Unstructured Data.
 
   - Sample Data Sources used in the deployed demo:
     - [Contract Understanding Atticus Dataset (CUAD)](https://www.atticusprojectai.org/cuad)
@@ -25,7 +29,7 @@ Additional features include how to search the public Cloud Knowledge Graph using
     - [Alphabet Earnings Reports](https://abc.xyz/investor/)
       - `gs://cloud-samples-data/gen-app-builder/search/alphabet-investor-pdfs`
 
-- Follow steps in [Get started with Enterprise Search][try_search] for Websites
+- Follow steps in [Get started with Vertex AI Search][try_search] for Websites
 
   - [Google Cloud site](https://cloud.google.com)
     - `https://cloud.google.com`
@@ -33,7 +37,7 @@ Additional features include how to search the public Cloud Knowledge Graph using
 - Follow steps in [Get started with Recommendations][try_recommendations] for Unstructured Data.
 
   - Sample Data Sources used in the deployed demo:
-    - [Natural language papers from ArXiv](https://arxiv.org)
+    - [Natural language papers from arXiv](https://arxiv.org)
       - `gs://cloud-samples-data/gen-app-builder/search/arxiv`
 
 ### Dependencies
@@ -52,6 +56,15 @@ Additional features include how to search the public Cloud Knowledge Graph using
    - `gcloud services enable run.googleapis.com`
 8. Setup application default authentication, run:
    - `gcloud auth application-default login`
+9. Give the Cloud Run service account required permissions:
+
+   ```sh
+   gcloud projects add-iam-policy-binding [PROJECT_ID or PROJECT_NUMBER] \
+      --member='serviceAccount:[PROJECT_NUMBER]-compute@developer.gserviceaccount.com' \
+      --role='roles/discoveryengine.viewer'
+   ```
+
+10. (Optional) If your Google Cloud organization has polices to [restrict sharing by domain](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains), then you'll need to change this to allow all domains for the Cloud Run application to be open to the public Internet.
 
 ### Demo Deployment
 
@@ -59,14 +72,14 @@ Additional features include how to search the public Cloud Knowledge Graph using
 
 2. Configure Vertex AI Search
 
-   - To use the prebuilt widget provided in the Cloud Console for Enterprise, Copy the `configId` from the `<gen-search-widget>` in the `Integration > Widget` tab.
+   - To use the [prebuilt widget](https://cloud.google.com/generative-ai-app-builder/docs/add-widget), copy the `configId` from the `<gen-search-widget>` in the `Integration > Widget` tab in the [Cloud Console](https://console.cloud.google.com/gen-app-builder).
      - ![configId](img/configId.png)
      - Be sure to set authorization type as `Public Access` and add your web application url to the `Allowed Domains` once it's deployed.
      - Add the `configId` for your Search Engines to `WIDGET_CONFIGS` in `consts.py`
-   - To use the Custom UI, add the datastore id for your search engine to `CUSTOM_UI_DATASTORE_IDS` in `consts.py`
+   - To use the Custom UI, add the engine id for your search engine to `CUSTOM_UI_ENGINE_IDS` in `consts.py`
      - This is the string after `/engines/` in the Cloud Console URL.
        - `https://console.cloud.google.com/gen-app-builder/engines/website-search-engine_1681248733152/...`
-       - Datastore ID is `website-search-engine_1681248733152`
+       - Engine ID is `website-search-engine_1681248733152`
 
 3. Configure Recommendations
 
@@ -78,9 +91,9 @@ Additional features include how to search the public Cloud Knowledge Graph using
 
 4. Configure Image Search
 
-   - Follow the instructions in the documentation to [enable image search](https://cloud.google.com/generative-ai-app-builder/docs/image-search#enable-advanced) for a search engine.
-   - This feature is in early access and requires separate allowlisting from the rest of Vertex AI Search in order to use.
-   - Add the datastore id for your search engine to `IMAGE_SEARCH_DATASTORE_IDs` in `consts.py`.
+   - Follow the instructions in the documentation to [enable image search](https://cloud.google.com/generative-ai-app-builder/docs/image-search#enable-advanced) for a website search engine.
+     - NOTE: You must enable [Advanced Website Indexing](https://cloud.google.com/generative-ai-app-builder/docs/about-advanced-features#advanced-website-indexing) which requires [domain verification](https://cloud.google.com/generative-ai-app-builder/docs/domain-verification).
+   - Add the engine id for your search engine to `IMAGE_SEARCH_DATASTORE_IDs` in `consts.py`.
 
 5. Deploy the Cloud Run app in your project.
 
